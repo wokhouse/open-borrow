@@ -1,4 +1,4 @@
-import { Sheet } from "@mui/joy";
+import { Box, Grid, Sheet } from "@mui/joy";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -15,7 +15,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Sheet>{children}</Sheet>
+        <Sheet>
+          <Grid
+            container
+            width={"100vw"}
+            height={"100vh"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Box>{children}</Box>
+          </Grid>
+        </Sheet>
       </body>
     </html>
   );

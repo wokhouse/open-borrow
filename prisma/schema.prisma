@@ -18,8 +18,28 @@ enum ItemState {
   DAMAGED
 }
 
+enum Department {
+  // textiles
+  TEX
+}
+
+enum ItemType {
+  // screen library
+  SL
+}
+
 model Item {
-  id        String    @id
-  createdAt DateTime  @default(now())
-  state     ItemState
+  id         String     @id
+  createdAt  DateTime   @default(now())
+  state      ItemState
+  department Department
+  type       ItemType
+  Screen     Screen?
+}
+
+model Screen {
+  itemMeta     Item   @relation(fields: [itemId], references: [id])
+  itemId       String @id
+  meshCount    Int
+  screenNumber Int
 }

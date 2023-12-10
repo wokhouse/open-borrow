@@ -31,29 +31,34 @@ const Modify = () => {
 
   const { id, state } = Item.parse(item);
 
-  useAsyncEffect(async (isMounted) => {
-    setLastAction({ loading: true });
-    const { id } = Item.parse(item);
-    const res = await getItemInclude(id, {
-      actions: {
-        orderBy: {
-          timestamp: "desc",
+  useAsyncEffect(
+    async (isMounted) => {
+      setLastAction({ loading: true });
+      const { id } = Item.parse(item);
+      const res = await getItemInclude(id, {
+        actions: {
+          orderBy: {
+            timestamp: "desc",
+          },
         },
-      },
-    });
-    if (!res) throw new Error("unknown item!");
-    if (!res?.actions) setLastAction({ empty: true });
-    else {
-      const action = ItemActionSchema.extend({
-        action: z.enum(["CHECK_OUT"]),
-        dueDate: z.coerce.date(),
-        itemId: z.string(),
-      }).safeParse({ ...res.actions[0], itemId: id });
-      if (action.success) {
-        setLastAction({ action: action.data });
+      });
+      if (!res) throw new Error("unknown item!");
+      if (isMounted()) {
+        if (!res?.actions) setLastAction({ empty: true });
+        else {
+          const action = ItemActionSchema.extend({
+            action: z.enum(["CHECK_OUT"]),
+            dueDate: z.coerce.date(),
+            itemId: z.string(),
+          }).safeParse({ ...res.actions[0], itemId: id });
+          if (action.success) {
+            setLastAction({ action: action.data });
+          }
+        }
       }
-    }
-  }, []);
+    },
+    [item]
+  );
 
   return (
     <Box textAlign={"center"}>

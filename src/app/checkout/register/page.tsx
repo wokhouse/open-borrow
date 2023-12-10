@@ -40,18 +40,30 @@ const Register = () => {
 
   return (
     <Grid container direction={"column"}>
-      <Typography>new item: {id}</Typography>
+      <Typography level="h1">
+        new item:{" "}
+        <Typography color="primary" variant="solid">
+          {id}
+        </Typography>
+      </Typography>
       <List>
         <ListItem>
-          ID: <Chip>{id}</Chip>
+          ID:{" "}
+          <Chip variant="soft" color="primary">
+            {id}
+          </Chip>
         </ListItem>
         {Object.entries(groups).map(([k, v]) => (
           <ListItem key={k}>
-            {k}: <Chip>{v}</Chip>
+            {k}:{" "}
+            <Chip variant="soft" color="primary">
+              {v}
+            </Chip>
           </ListItem>
         ))}
       </List>
       <Button
+        variant="solid"
         onClick={() => {
           createScreen({
             itemMeta: { ...newItemData, createdAt: new Date() },
@@ -62,6 +74,7 @@ const Register = () => {
             },
           });
         }}
+        sx={{ fontSize: "2.4rem" }}
       >
         Register
       </Button>

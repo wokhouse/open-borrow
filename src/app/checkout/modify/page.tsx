@@ -10,6 +10,7 @@ import {
   ItemFindUniqueSchema,
 } from "../../../../prisma/generated/schemas";
 import StateChip from "@/components/StateChip";
+import CheckOut from "./CheckOut";
 
 const Modify = () => {
   const contextData = useContext(ItemContext);
@@ -41,11 +42,7 @@ const Modify = () => {
         status: <StateChip state={state} />
       </Box>
       <Box margin={1} sx={{ button: { fontSize: "1.5rem" } }}>
-        {state === "AVAILABLE" && (
-          <Button onClick={handleCheckout} color="success">
-            check out
-          </Button>
-        )}
+        {state === "AVAILABLE" && <CheckOut />}
         {(state === "CHECKED_OUT" || state === "DUE") && (
           <Button onClick={handleReturn} color="success">
             return

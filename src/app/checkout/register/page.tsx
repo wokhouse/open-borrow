@@ -9,7 +9,6 @@ import { Item, Screen } from "@/api/runtimeSchemas";
 
 const Register = () => {
   const contextData = useContext(ItemContext);
-  console.log(contextData);
   const { id } = contextData.item;
 
   if (!id) throw new Error("ID is undefined!");
@@ -24,6 +23,7 @@ const Register = () => {
     state: "AVAILABLE",
     department: "TEX",
     type: groups.type,
+    createdAt: new Date(),
   });
 
   const validScreen = Screen.parse({
@@ -60,11 +60,11 @@ const Register = () => {
         variant="solid"
         onClick={() => {
           createScreen({
-            itemMeta: { ...validItem, createdAt: new Date() },
+            itemMeta: { ...validItem },
             screenMeta: {
               itemId: id,
-              meshCount: parseInt(groups.meshCount),
-              screenNumber: parseInt(groups.screenNumber),
+              meshCount: validScreen.meshCount,
+              screenNumber: validScreen.screenNumber,
             },
           });
         }}

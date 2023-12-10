@@ -1,5 +1,6 @@
 import { Chip, ColorPaletteProp } from "@mui/joy";
 import { Item } from "@prisma/client";
+import { ReactNode } from "react";
 
 const stateColors: Record<Item["state"], ColorPaletteProp> = {
   AVAILABLE: "success",
@@ -8,8 +9,12 @@ const stateColors: Record<Item["state"], ColorPaletteProp> = {
   DAMAGED: "neutral",
 };
 
-const StateChip = ({ state }: { state: Item["state"] }) => (
-  <Chip color={stateColors[state]}>{state}</Chip>
-);
+const StateChip = ({
+  state,
+  children,
+}: {
+  state: Item["state"];
+  children?: ReactNode;
+}) => <Chip color={stateColors[state]}>{children || state}</Chip>;
 
 export default StateChip;

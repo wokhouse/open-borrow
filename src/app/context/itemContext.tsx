@@ -9,9 +9,10 @@ import {
 
 import { Item } from "@prisma/client";
 
-interface ItemContextDefinition extends Partial<Item> {
+interface ItemContextDefinition {
   setItemState: (item: Item) => void;
   setID: (id: string) => void;
+  item: Partial<Item>;
 }
 
 export const ItemContext = createContext<ItemContextDefinition>({
@@ -21,6 +22,7 @@ export const ItemContext = createContext<ItemContextDefinition>({
   setID: (item) => {
     throw new Error("item context is not initualized!");
   },
+  item: {},
 });
 
 export const ItemProvider = ({
@@ -46,7 +48,7 @@ export const ItemProvider = ({
   );
 
   return (
-    <ItemContext.Provider value={{ ...itemState, setItemState, setID }}>
+    <ItemContext.Provider value={{ item: itemState, setItemState, setID }}>
       {children}
     </ItemContext.Provider>
   );

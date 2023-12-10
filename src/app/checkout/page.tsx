@@ -1,17 +1,19 @@
 "use client";
 
 import { getItem } from "@/api";
-import { Box, Grid, Typography } from "@mui/joy";
-import { useContext } from "react";
+import { Box, CircularProgress, Grid, Typography } from "@mui/joy";
+import { useContext, useState } from "react";
 import { ItemContext } from "../context/itemContext";
 import ManualInput from "./components/ManualInput";
 import { useRouter } from "next/navigation";
 
 const Checkout = () => {
+  const [loading, setLoading] = useState(false);
   const { setID, setItemState } = useContext(ItemContext);
   const router = useRouter();
 
   const handleIdInput = async (id: string) => {
+    setLoading(true);
     const res = await getItem(id);
     if (res === null) {
       setID(id);
@@ -20,14 +22,17 @@ const Checkout = () => {
       setItemState(res);
       router.push("/checkout/modify");
     }
+    setLoading(false);
   };
 
   return (
     <Grid container direction="column" alignItems={"center"}>
-      <Box>
-        <Typography level="h1">checkout</Typography>
+      <Typography level="h1">checkout</Typography>
+      {loading ? (
+        <CircularProgress />
+      ) : (
         <ManualInput handleSubmit={handleIdInput} />
-      </Box>
+      )}
     </Grid>
   );
 };

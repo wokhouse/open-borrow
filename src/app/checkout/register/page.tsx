@@ -12,7 +12,7 @@ import { ItemContext } from "@/app/context/itemContext";
 const Register = () => {
   const contextData = useContext(ItemContext);
   console.log(contextData);
-  const { id } = contextData;
+  const { id } = contextData.item;
 
   if (!id) throw new Error("ID is undefined!");
 

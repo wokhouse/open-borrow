@@ -10,7 +10,7 @@ import {
 } from "react";
 
 import { Item } from "@prisma/client";
-import { CircularProgress } from "@mui/joy";
+import { Box, CircularProgress, Grid, Sheet } from "@mui/joy";
 
 interface ItemContextDefinition {
   setItemState: (item: Item) => void;
@@ -57,7 +57,16 @@ export const ItemProvider = ({
 
   return (
     <ItemContext.Provider value={{ item: itemState, setItemState, setID }}>
-      {mounted ? children : <CircularProgress />}
+      {mounted ? (
+        children
+      ) : (
+        <Sheet>
+          <Grid container direction={"column"} alignItems={"center"}>
+            <CircularProgress />
+            loading context data...
+          </Grid>
+        </Sheet>
+      )}
     </ItemContext.Provider>
   );
 };

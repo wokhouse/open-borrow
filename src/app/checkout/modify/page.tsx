@@ -3,33 +3,18 @@
 import { checkoutItem, getItem, getItemInclude, returnItem } from "@/api";
 import { ItemContext } from "@/context/itemContext";
 import { Box, Button, Chip, ColorPaletteProp, Typography } from "@mui/joy";
-import { Item } from "@prisma/client";
 import { useContext } from "react";
-import {
-  ItemCreateOneSchema,
-  ItemFindUniqueSchema,
-} from "../../../../prisma/generated/schemas";
 import StateChip from "@/components/StateChip";
 import CheckOut from "./CheckOut";
+import { Item } from "@/api/runtimeSchemas";
+import Return from "./Return";
 
 const Modify = () => {
   const contextData = useContext(ItemContext);
-  const { data } = ItemCreateOneSchema.parse({
-    data: contextData.item,
-  });
+
+  const data = Item.parse(contextData.item);
   const { setItemState } = contextData;
   const { id, state } = data;
-
-  const handleCheckout = async () => {
-    await checkoutItem(id, "crane yakamoto");
-    const item = await getItem(id);
-    if (item) setItemState(item);
-  };
-  const handleReturn = async () => {
-    await returnItem(id);
-    const item = await getItem(id);
-    if (item) setItemState(item);
-  };
 
   return (
     <Box textAlign={"center"}>
@@ -43,11 +28,7 @@ const Modify = () => {
       </Box>
       <Box margin={1} sx={{ button: { fontSize: "1.5rem" } }}>
         {state === "AVAILABLE" && <CheckOut />}
-        {(state === "CHECKED_OUT" || state === "DUE") && (
-          <Button onClick={handleReturn} color="success">
-            return
-          </Button>
-        )}
+        {(state === "CHECKED_OUT" || state === "DUE") && <Return />}
       </Box>
     </Box>
   );

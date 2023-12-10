@@ -10,10 +10,10 @@ import {
   Input,
 } from "@mui/joy";
 import { useContext, useState } from "react";
-import { ItemCreateOneSchema } from "../../../../prisma/generated/schemas";
 import { checkoutItem, getItem } from "@/api";
 import texQR from "../../../assets/img/tex-stripe.png";
 import Image from "next/image";
+import { Item } from "@/api/runtimeSchemas";
 
 const CheckOut = () => {
   const contextData = useContext(ItemContext);
@@ -21,9 +21,7 @@ const CheckOut = () => {
   const [feePaid, setFeePaid] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { data } = ItemCreateOneSchema.parse({
-    data: contextData.item,
-  });
+  const data = Item.parse(contextData.item);
   const { setItemState } = contextData;
   const { id, state } = data;
 

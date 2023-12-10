@@ -2,12 +2,10 @@
 import { createScreen } from "@/api";
 import { idPattern } from "@/api/validate";
 import { Button, Chip, Grid, List, ListItem, Typography } from "@mui/joy";
-import {
-  ItemCreateOneSchema,
-  ScreenCreateOneSchema,
-} from "../../../../prisma/generated/schemas";
 import { useContext } from "react";
 import { ItemContext } from "@/context/itemContext";
+import { Prisma } from "@prisma/client";
+import { Item, Screen } from "@/api/runtimeSchemas";
 
 const Register = () => {
   const contextData = useContext(ItemContext);
@@ -21,21 +19,17 @@ const Register = () => {
     throw new Error("regex pattern failed to pull data out of ID!");
   const { groups } = data;
 
-  const { data: newItemData } = ItemCreateOneSchema.parse({
-    data: {
-      id: id,
-      state: "AVAILABLE",
-      department: "TEX",
-      type: groups.type,
-    },
+  const validItem = Item.parse({
+    id: id,
+    state: "AVAILABLE",
+    department: "TEX",
+    type: groups.type,
   });
 
-  const screenParseResults = ScreenCreateOneSchema.parse({
-    data: {
-      itemId: id,
-      meshCount: parseInt(groups.meshCount),
-      screenNumber: parseInt(groups.screenNumber),
-    },
+  const validScreen = Screen.parse({
+    itemId: id,
+    meshCount: parseInt(groups.meshCount),
+    screenNumber: parseInt(groups.screenNumber),
   });
 
   return (
@@ -66,7 +60,7 @@ const Register = () => {
         variant="solid"
         onClick={() => {
           createScreen({
-            itemMeta: { ...newItemData, createdAt: new Date() },
+            itemMeta: { ...validItem, createdAt: new Date() },
             screenMeta: {
               itemId: id,
               meshCount: parseInt(groups.meshCount),

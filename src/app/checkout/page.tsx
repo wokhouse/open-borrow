@@ -2,10 +2,10 @@
 
 import { getItem } from "@/api";
 import { Box, CircularProgress, Grid, Typography } from "@mui/joy";
-import { useContext, useState } from "react";
-import { ItemContext } from "../../context/itemContext";
-import ManualInput from "../../components/ManualInput";
 import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import IDInput from "../../components/IDInput";
+import { ItemContext } from "../../context/itemContext";
 
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,9 @@ const Checkout = () => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <ManualInput handleSubmit={handleIdInput} />
+        <Box>
+          <IDInput handleSubmit={handleIdInput} />
+        </Box>
       )}
     </Grid>
   );

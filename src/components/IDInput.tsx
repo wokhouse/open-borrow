@@ -2,13 +2,10 @@
 
 import { idPattern } from "@/api/validate";
 import { Box, Button, FormLabel, Grid, Input } from "@mui/joy";
+import { QrScanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
 
-const ManualInput = ({
-  handleSubmit,
-}: {
-  handleSubmit: (id: string) => void;
-}) => {
+const IDInput = ({ handleSubmit }: { handleSubmit: (id: string) => void }) => {
   const [value, setValue] = useState<string>("");
 
   const valid = idPattern.test(value);
@@ -21,8 +18,15 @@ const ManualInput = ({
       }}
     >
       <Grid container gap={1} alignItems={"flex-end"}>
-        <Grid container direction={"column"}>
-          <FormLabel>manual ID input</FormLabel>
+        <QrScanner
+          onError={console.error}
+          onResult={(r) => {
+            setValue(`${r}`);
+            if (valid) handleSubmit(value);
+          }}
+          videoStyle={{ transform: "scaleX(-1)" }}
+        ></QrScanner>
+        <Grid container>
           <Input
             id="manualInput"
             value={value}
@@ -41,4 +45,4 @@ const ManualInput = ({
     </form>
   );
 };
-export default ManualInput;
+export default IDInput;

@@ -3,7 +3,7 @@
 import { getItem } from "@/api";
 import { Box, CircularProgress, Grid, Typography } from "@mui/joy";
 import { useContext, useState } from "react";
-import { ItemContext } from "../context/itemContext";
+import { ItemContext } from "../../context/itemContext";
 import ManualInput from "./components/ManualInput";
 import { useRouter } from "next/navigation";
 

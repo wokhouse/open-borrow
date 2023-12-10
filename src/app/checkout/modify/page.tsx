@@ -1,7 +1,7 @@
 "use client";
 
 import { checkoutItem, getItem, getItemInclude, returnItem } from "@/api";
-import { ItemContext } from "@/app/context/itemContext";
+import { ItemContext } from "@/context/itemContext";
 import { Box, Button, Chip, ColorPaletteProp, Typography } from "@mui/joy";
 import { Item } from "@prisma/client";
 import { useContext } from "react";

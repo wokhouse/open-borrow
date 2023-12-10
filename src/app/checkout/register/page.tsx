@@ -7,7 +7,7 @@ import {
   ScreenCreateOneSchema,
 } from "../../../../prisma/generated/schemas";
 import { useContext } from "react";
-import { ItemContext } from "@/app/context/itemContext";
+import { ItemContext } from "@/context/itemContext";
 
 const Register = () => {
   const contextData = useContext(ItemContext);

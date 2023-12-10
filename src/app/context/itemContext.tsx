@@ -4,10 +4,13 @@ import {
   ReactNode,
   createContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 
 import { Item } from "@prisma/client";
+import { CircularProgress } from "@mui/joy";
 
 interface ItemContextDefinition {
   setItemState: (item: Item) => void;
@@ -31,25 +34,30 @@ export const ItemProvider = ({
   children: ReactNode | ReactNode[];
 }) => {
   const storageKey = "itemContextData";
-  const storedRawData = sessionStorage.getItem(storageKey);
-  let storedData = {};
-  try {
-    if (storedRawData) storedData = JSON.parse(storedRawData);
-  } catch {
-    console.warn("failed to rehydrate context");
-  }
+  const [itemState, setItemState] = useState<Partial<Item>>({});
+  const [mounted, setMounted] = useState(false);
 
-  const [itemState, setItemState] = useState<Partial<Item>>(storedData);
+  useEffect(() => {
+    try {
+      const storedRawData = sessionStorage.getItem(storageKey);
+      setItemState(JSON.parse(storedRawData || "{}"));
+    } catch {
+      console.warn("failed to rehydrate context");
+    }
+    setMounted(true);
+  }, []);
+
   const setID = (id: string) => setItemState({ id });
 
-  useEffect(
-    () => sessionStorage.setItem(storageKey, JSON.stringify(itemState)),
-    [itemState]
-  );
+  useEffect(() => {
+    if (mounted === true) {
+      sessionStorage.setItem(storageKey, JSON.stringify(itemState));
+    }
+  }, [itemState, mounted]);
 
   return (
     <ItemContext.Provider value={{ item: itemState, setItemState, setID }}>
-      {children}
+      {mounted ? children : <CircularProgress />}
     </ItemContext.Provider>
   );
 };

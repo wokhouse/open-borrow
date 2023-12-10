@@ -7,6 +7,7 @@ import { DepartmentSchema } from '../enums/Department.schema';
 import { EnumDepartmentFieldUpdateOperationsInputObjectSchema } from './EnumDepartmentFieldUpdateOperationsInput.schema';
 import { ItemTypeSchema } from '../enums/ItemType.schema';
 import { EnumItemTypeFieldUpdateOperationsInputObjectSchema } from './EnumItemTypeFieldUpdateOperationsInput.schema';
+import { ItemActionUpdateManyWithoutItemNestedInputObjectSchema } from './ItemActionUpdateManyWithoutItemNestedInput.schema';
 import { ScreenUpdateOneWithoutItemMetaNestedInputObjectSchema } from './ScreenUpdateOneWithoutItemMetaNestedInput.schema';
 
 import type { Prisma } from '@prisma/client';
@@ -43,6 +44,9 @@ const Schema: z.ZodType<Prisma.ItemUpdateInput> = z
         z.lazy(() => ItemTypeSchema),
         z.lazy(() => EnumItemTypeFieldUpdateOperationsInputObjectSchema),
       ])
+      .optional(),
+    actions: z
+      .lazy(() => ItemActionUpdateManyWithoutItemNestedInputObjectSchema)
       .optional(),
     screen: z
       .lazy(() => ScreenUpdateOneWithoutItemMetaNestedInputObjectSchema)

@@ -30,13 +30,30 @@ enum ItemType {
   SL
 }
 
+enum ActionType {
+  CHECK_OUT
+  RETURN
+  DAMAGED
+}
+
 model Item {
-  id         String     @id
-  createdAt  DateTime?  @default(now())
+  id         String       @id
+  createdAt  DateTime?    @default(now())
   state      ItemState
   department Department
   type       ItemType
+  actions    ItemAction[]
   screen     Screen?
+}
+
+model ItemAction {
+  id        Int        @id @default(autoincrement())
+  timestamp DateTime   @default(now())
+  action    ActionType
+  name      String
+  dueDate   DateTime?  @default(dbgenerated("NOW() + INTERVAL '30 days'"))
+  Item      Item?      @relation(fields: [itemId], references: [id])
+  itemId    String?
 }
 
 model Screen {

@@ -7,6 +7,7 @@ import { EnumDepartmentFilterObjectSchema } from './EnumDepartmentFilter.schema'
 import { DepartmentSchema } from '../enums/Department.schema';
 import { EnumItemTypeFilterObjectSchema } from './EnumItemTypeFilter.schema';
 import { ItemTypeSchema } from '../enums/ItemType.schema';
+import { ItemActionListRelationFilterObjectSchema } from './ItemActionListRelationFilter.schema';
 import { ScreenRelationFilterObjectSchema } from './ScreenRelationFilter.schema';
 import { ScreenWhereInputObjectSchema } from './ScreenWhereInput.schema';
 
@@ -58,6 +59,7 @@ const Schema: z.ZodType<Prisma.ItemWhereInput> = z
         z.lazy(() => ItemTypeSchema),
       ])
       .optional(),
+    actions: z.lazy(() => ItemActionListRelationFilterObjectSchema).optional(),
     screen: z
       .union([
         z.lazy(() => ScreenRelationFilterObjectSchema),

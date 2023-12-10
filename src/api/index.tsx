@@ -15,6 +15,56 @@ export const getItem = async (id: string) => {
 export const createItem = async (item: Item) =>
   prisma.item.create({ data: { ...item, department: "TEX" } });
 
+export const checkoutItem = async (id: Item["id"], name: string) => {
+  await prisma.itemAction.create({
+    data: {
+      action: "CHECK_OUT",
+      name: name,
+      itemId: id,
+    },
+  });
+  await prisma.item.update({
+    where: {
+      id,
+    },
+    data: {
+      state: "CHECKED_OUT",
+    },
+  });
+  return;
+};
+export const returnItem = async (id: Item["id"]) => {
+  const itemPromise = prisma.item.update({
+    where: {
+      id,
+    },
+    data: {
+      state: "AVAILABLE",
+    },
+  });
+  const itemHistory = await prisma.itemAction.findFirst({
+    where: {
+      itemId: id,
+      action: "CHECK_OUT",
+    },
+    orderBy: {
+      timestamp: "asc",
+    },
+  });
+  if (!itemHistory || !("name" in itemHistory))
+    throw new Error("cannot find record of previous check-out!");
+  const actionPromise = prisma.itemAction.create({
+    data: {
+      action: "RETURN",
+      name: itemHistory.name,
+      itemId: id,
+    },
+  });
+
+  await Promise.all([itemPromise, actionPromise]);
+  return;
+};
+
 export const createScreen = async ({
   itemMeta,
   screenMeta,
@@ -22,11 +72,12 @@ export const createScreen = async ({
   itemMeta: Item;
   screenMeta: Screen;
 }) => {
-  const itemRes = await prisma.item.create({
+  const itemPromise = prisma.item.create({
     data: itemMeta,
   });
-  const screenRes = await prisma.screen.create({
+  const screenPromise = prisma.screen.create({
     data: screenMeta,
   });
-  return [itemRes, screenRes];
+  await Promise.all([itemPromise, screenPromise]);
+  return;
 };

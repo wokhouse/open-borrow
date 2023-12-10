@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { ItemStateSchema } from '../enums/ItemState.schema';
 import { DepartmentSchema } from '../enums/Department.schema';
 import { ItemTypeSchema } from '../enums/ItemType.schema';
+import { ItemActionUncheckedCreateNestedManyWithoutItemInputObjectSchema } from './ItemActionUncheckedCreateNestedManyWithoutItemInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -12,6 +13,11 @@ const Schema: z.ZodType<Prisma.ItemUncheckedCreateWithoutScreenInput> = z
     state: z.lazy(() => ItemStateSchema),
     department: z.lazy(() => DepartmentSchema),
     type: z.lazy(() => ItemTypeSchema),
+    actions: z
+      .lazy(
+        () => ItemActionUncheckedCreateNestedManyWithoutItemInputObjectSchema,
+      )
+      .optional(),
   })
   .strict();
 

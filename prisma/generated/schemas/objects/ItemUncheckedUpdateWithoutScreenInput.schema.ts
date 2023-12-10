@@ -7,6 +7,7 @@ import { DepartmentSchema } from '../enums/Department.schema';
 import { EnumDepartmentFieldUpdateOperationsInputObjectSchema } from './EnumDepartmentFieldUpdateOperationsInput.schema';
 import { ItemTypeSchema } from '../enums/ItemType.schema';
 import { EnumItemTypeFieldUpdateOperationsInputObjectSchema } from './EnumItemTypeFieldUpdateOperationsInput.schema';
+import { ItemActionUncheckedUpdateManyWithoutItemNestedInputObjectSchema } from './ItemActionUncheckedUpdateManyWithoutItemNestedInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -42,6 +43,11 @@ const Schema: z.ZodType<Prisma.ItemUncheckedUpdateWithoutScreenInput> = z
         z.lazy(() => ItemTypeSchema),
         z.lazy(() => EnumItemTypeFieldUpdateOperationsInputObjectSchema),
       ])
+      .optional(),
+    actions: z
+      .lazy(
+        () => ItemActionUncheckedUpdateManyWithoutItemNestedInputObjectSchema,
+      )
       .optional(),
   })
   .strict();

@@ -1,10 +1,11 @@
 "use client";
 
 import { ItemContext } from "@/app/context/itemContext";
-import { Box, Chip, ColorPaletteProp, Typography } from "@mui/joy";
+import { Box, Button, Chip, ColorPaletteProp, Typography } from "@mui/joy";
 import { Item } from "@prisma/client";
 import { useContext } from "react";
 import { ItemCreateOneSchema } from "../../../../prisma/generated/schemas";
+import { checkoutItem, returnItem } from "@/api";
 
 const Modify = () => {
   const contextData = useContext(ItemContext);
@@ -18,6 +19,13 @@ const Modify = () => {
     DAMAGED: "neutral",
   };
 
+  const handleCheckout = async () => {
+    await checkoutItem(id, "crane yakamoto");
+  };
+  const handleReturn = async () => {
+    await returnItem(id);
+  };
+
   return (
     <Box textAlign={"center"}>
       <Typography level="h1">
@@ -28,6 +36,8 @@ const Modify = () => {
       <Box sx={{ fontSize: "1.5rem", fontWeight: "bold" }}>
         status: <Chip color={stateColors[state]}>{state}</Chip>
       </Box>
+      <Button onClick={handleCheckout}>check out</Button>
+      <Button onClick={handleReturn}>return</Button>
     </Box>
   );
 };

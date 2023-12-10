@@ -2,6 +2,7 @@ import { Box, Grid, Sheet } from "@mui/joy";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
+import { ItemProvider } from "./context/itemContext";
 
 export const metadata: Metadata = {
   title: "📚 open-borrow",
@@ -24,7 +25,9 @@ export default function RootLayout({
             justifyContent={"center"}
             alignItems={"center"}
           >
-            <Box>{children}</Box>
+            <ItemProvider>
+              <Box>{children}</Box>
+            </ItemProvider>
           </Grid>
         </Sheet>
       </body>

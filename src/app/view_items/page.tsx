@@ -1,17 +1,25 @@
 "use client";
 import { getAllItems } from "@/api";
 import StateChip from "@/components/StateChip";
-import { Box, Chip, Table } from "@mui/joy";
+import { ItemContext } from "@/context/itemContext";
+import { Box, Chip, CircularProgress, Table } from "@mui/joy";
 import { Item } from "@prisma/client";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
 import useAsyncEffect from "use-async-effect";
 
 const ViewItems = () => {
-  const [items, setItems] = useState<Item[]>([]);
+  const { setItemState } = useContext(ItemContext);
+  const [items, setItems] = useState<
+    Item[] | { loading: true } | { uninitialized: true }
+  >({ uninitialized: true });
 
   useAsyncEffect(async (isMounted) => {
+    setItems({ loading: true });
     const res = await getAllItems();
-    setItems(res);
+    if (isMounted()) {
+      setItems(res);
+    }
   }, []);
 
   return (
@@ -26,16 +34,32 @@ const ViewItems = () => {
           </tr>
         </thead>
         <tbody>
-          {items.map(({ id, department, type, state }) => (
-            <tr key={id}>
-              <td>{id}</td>
-              <td>{department}</td>
-              <td>{type}</td>
-              <td>
-                <StateChip state={state} />
-              </td>
-            </tr>
-          ))}
+          {Array.isArray(items) ? (
+            items.map((item) => {
+              const { id, department, type, state } = item;
+              return (
+                <tr key={id}>
+                  <td>
+                    <Link
+                      onClick={() => {
+                        setItemState(item);
+                      }}
+                      href="/checkout/modify"
+                    >
+                      {id}
+                    </Link>
+                  </td>
+                  <td>{department}</td>
+                  <td>{type}</td>
+                  <td>
+                    <StateChip state={state} />
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <CircularProgress />
+          )}
         </tbody>
       </Table>
     </Box>

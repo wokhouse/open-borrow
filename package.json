@@ -15,8 +15,10 @@
     "@prisma/client": "^5.7.0",
     "@vercel/postgres": "^0.5.1",
     "next": "14.0.4",
+    "prisma-zod-generator": "^0.8.13",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",

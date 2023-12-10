@@ -5,6 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator zod {
+  provider = "prisma-zod-generator"
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
@@ -34,7 +38,7 @@ model Item {
   state      ItemState
   department Department
   type       ItemType
-  Screen     Screen?
+  screen     Screen?
 }
 
 model Screen {

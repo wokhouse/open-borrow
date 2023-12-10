@@ -36,9 +36,6 @@ const Modify = () => {
     const { id } = Item.parse(item);
     const res = await getItemInclude(id, {
       actions: {
-        where: {
-          action: "CHECK_OUT",
-        },
         orderBy: {
           timestamp: "desc",
         },
@@ -51,8 +48,10 @@ const Modify = () => {
         action: z.enum(["CHECK_OUT"]),
         dueDate: z.coerce.date(),
         itemId: z.string(),
-      }).parse({ ...res.actions[0], itemId: id });
-      setLastAction({ action });
+      }).safeParse({ ...res.actions[0], itemId: id });
+      if (action.success) {
+        setLastAction({ action: action.data });
+      }
     }
   }, []);
 

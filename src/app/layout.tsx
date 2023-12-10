@@ -1,6 +1,7 @@
 import { Box, Grid, Sheet } from "@mui/joy";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "📚 open-borrow",

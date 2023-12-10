@@ -3,8 +3,8 @@
 import { getItem } from "@/api";
 import { Box, Grid, Typography } from "@mui/joy";
 import { useState } from "react";
-import ManualInput from "./ManualInput";
-import Register from "./Register";
+import ManualInput from "./components/ManualInput";
+import Register from "./pages/Register";
 
 const Checkout = () => {
   const [checkoutState, setCheckoutState] = useState<

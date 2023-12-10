@@ -1,23 +1,10 @@
-import { createItem, createScreen } from "@/api";
+import { createScreen } from "@/api";
 import { idPattern } from "@/api/validate";
-import {
-  Box,
-  Button,
-  Chip,
-  Dropdown,
-  Grid,
-  List,
-  ListItem,
-  Menu,
-  MenuButton,
-  MenuItem,
-  Table,
-} from "@mui/joy";
-import { Prisma, Item, Screen } from "@prisma/client";
+import { Button, Chip, Grid, List, ListItem } from "@mui/joy";
 import {
   ItemCreateOneSchema,
   ScreenCreateOneSchema,
-} from "../../../prisma/generated/schemas";
+} from "../../../../prisma/generated/schemas";
 
 const Register = ({ id }: { id: string }) => {
   const data = idPattern.exec(id);
@@ -34,12 +21,13 @@ const Register = ({ id }: { id: string }) => {
     },
   });
 
-  // const { data: newScreenData } = ScreenCreateOneSchema.parse({
-  //   itemId: id,
-  //   meshCount: groups.meshCount,
-  //   screenNumber: groups.screenNumber,
-  // });
-  console.log(newItemData);
+  const screenParseResults = ScreenCreateOneSchema.parse({
+    data: {
+      itemId: id,
+      meshCount: parseInt(groups.meshCount),
+      screenNumber: parseInt(groups.screenNumber),
+    },
+  });
 
   return (
     <Grid container direction={"column"}>
@@ -55,7 +43,14 @@ const Register = ({ id }: { id: string }) => {
       </List>
       <Button
         onClick={() => {
-          createItem({ ...newItemData, createdAt: new Date() });
+          createScreen({
+            itemMeta: { ...newItemData, createdAt: new Date() },
+            screenMeta: {
+              itemId: id,
+              meshCount: parseInt(groups.meshCount),
+              screenNumber: parseInt(groups.screenNumber),
+            },
+          });
         }}
       >
         Register

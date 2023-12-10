@@ -15,7 +15,6 @@ const Checkout = () => {
   const handleIdInput = async (id: string) => {
     setLoading(true);
     const res = await getItem(id);
-    console.log(res);
     if (res === null) {
       setID(id);
       router.push("/checkout/register");

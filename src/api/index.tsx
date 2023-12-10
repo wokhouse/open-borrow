@@ -1,5 +1,5 @@
 "use server";
-import { PrismaClient, Screen, Item } from "@prisma/client";
+import { PrismaClient, Screen, Item, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -8,6 +8,19 @@ export const getItem = async (id: string) => {
     where: {
       id,
     },
+  });
+  return res;
+};
+
+export const getItemInclude = async (
+  id: string,
+  include: Prisma.ItemInclude
+) => {
+  const res = await prisma.item.findUnique({
+    where: {
+      id,
+    },
+    include,
   });
   return res;
 };

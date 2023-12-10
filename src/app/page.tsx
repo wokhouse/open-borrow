@@ -10,7 +10,7 @@ export default function Home() {
       minWidth={"30rem"}
     >
       <Typography level="h1" marginBottom={"1rem"}>
-        open borrow
+        textiles library
       </Typography>
       <Link href={"/checkout"}>
         <Button color="primary">

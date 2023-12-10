@@ -2,7 +2,14 @@
 import { getAllItems } from "@/api";
 import StateChip from "@/components/StateChip";
 import { ItemContext } from "@/context/itemContext";
-import { Box, Chip, CircularProgress, Table } from "@mui/joy";
+import {
+  Box,
+  Chip,
+  CircularProgress,
+  Sheet,
+  Table,
+  Typography,
+} from "@mui/joy";
 import { Item } from "@prisma/client";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -23,7 +30,10 @@ const ViewItems = () => {
   }, []);
 
   return (
-    <Box>
+    <Box maxWidth={"35rem"}>
+      <Typography margin={1} level="h1" textAlign={"center"}>
+        all items
+      </Typography>
       <Table>
         <thead>
           <tr>

@@ -25,6 +25,11 @@ export const getItemInclude = async (
   return res;
 };
 
+export const getAllItems = async () => {
+  const res = await prisma.item.findMany();
+  return res;
+};
+
 export const createItem = async (item: Item) =>
   prisma.item.create({ data: { ...item, department: "TEX" } });
 

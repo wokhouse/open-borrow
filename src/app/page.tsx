@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/joy";
+import { Box, Button, Grid, Typography } from "@mui/joy";
 import Link from "next/link";
 
 export default function Home() {
@@ -19,6 +19,9 @@ export default function Home() {
           </Typography>
         </Button>
       </Link>
+      <Box margin={1} sx={{ a: { color: "#000" } }}>
+        <Link href={"view_items"}>view all items</Link>
+      </Box>
     </Grid>
   );
 }

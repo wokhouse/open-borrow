@@ -9,6 +9,7 @@ import {
   ItemCreateOneSchema,
   ItemFindUniqueSchema,
 } from "../../../../prisma/generated/schemas";
+import StateChip from "@/components/StateChip";
 
 const Modify = () => {
   const contextData = useContext(ItemContext);
@@ -17,13 +18,6 @@ const Modify = () => {
   });
   const { setItemState } = contextData;
   const { id, state } = data;
-
-  const stateColors: Record<Item["state"], ColorPaletteProp> = {
-    AVAILABLE: "success",
-    CHECKED_OUT: "warning",
-    DUE: "danger",
-    DAMAGED: "neutral",
-  };
 
   const handleCheckout = async () => {
     await checkoutItem(id, "crane yakamoto");
@@ -44,7 +38,7 @@ const Modify = () => {
         </Typography>
       </Typography>
       <Box fontSize={"1.5rem"} fontWeight={"bold"} margin={2}>
-        status: <Chip color={stateColors[state]}>{state}</Chip>
+        status: <StateChip state={state} />
       </Box>
       <Box margin={1} sx={{ button: { fontSize: "1.5rem" } }}>
         {state === "AVAILABLE" && (
@@ -52,8 +46,11 @@ const Modify = () => {
             check out
           </Button>
         )}
-        {state === "CHECKED_OUT" ||
-          (state === "DUE" && <Button onClick={handleReturn}>return</Button>)}
+        {(state === "CHECKED_OUT" || state === "DUE") && (
+          <Button onClick={handleReturn} color="success">
+            return
+          </Button>
+        )}
       </Box>
     </Box>
   );

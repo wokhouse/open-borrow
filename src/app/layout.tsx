@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { ItemProvider } from "../context/itemContext";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "📚 open-borrow",
@@ -17,19 +18,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Sheet>
-          <Grid
-            container
-            width={"100vw"}
-            height={"100vh"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <ItemProvider>
+        <ItemProvider>
+          <Sheet>
+            <Grid
+              container
+              width={"100%"}
+              height={"95vh"}
+              overflow={"hidden"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              direction={"column"}
+            >
+              <Link href={"/"}>
+                <Box fontSize={"2.5rem"}>🏠</Box>
+              </Link>
               <Box>{children}</Box>
-            </ItemProvider>
-          </Grid>
-        </Sheet>
+              <Box />
+            </Grid>
+          </Sheet>
+        </ItemProvider>
       </body>
     </html>
   );

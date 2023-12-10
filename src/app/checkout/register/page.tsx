@@ -1,15 +1,21 @@
 "use client";
-import { createScreen } from "@/api";
+import { createItem, createScreen } from "@/api";
 import { idPattern } from "@/api/validate";
 import { Button, Chip, Grid, List, ListItem, Typography } from "@mui/joy";
 import { useContext } from "react";
 import { ItemContext } from "@/context/itemContext";
 import { Prisma } from "@prisma/client";
 import { Item, Screen } from "@/api/runtimeSchemas";
+import { useRouter } from "next/navigation";
+import { StyledListItem } from "@mui/joy/ListItem/ListItem";
 
 const Register = () => {
   const contextData = useContext(ItemContext);
-  const { id } = contextData.item;
+  const router = useRouter();
+  const {
+    item: { id },
+    setItemState,
+  } = contextData;
 
   if (!id) throw new Error("ID is undefined!");
 
@@ -58,15 +64,16 @@ const Register = () => {
       </List>
       <Button
         variant="solid"
-        onClick={() => {
-          createScreen({
+        onClick={async () => {
+          const res = await createScreen({
             itemMeta: { ...validItem },
             screenMeta: {
-              itemId: id,
               meshCount: validScreen.meshCount,
               screenNumber: validScreen.screenNumber,
             },
           });
+          setItemState(res);
+          router.push("/checkout/modify");
         }}
         sx={{ fontSize: "2.4rem" }}
       >

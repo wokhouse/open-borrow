@@ -31,7 +31,7 @@ export const getAllItems = async () => {
 };
 
 export const createItem = async (item: Item) =>
-  prisma.item.create({ data: { ...item, department: "TEX" } });
+  prisma.item.create({ data: { ...item } });
 
 export const checkoutItem = async (id: Item["id"], name: string) => {
   await prisma.$transaction([
@@ -91,7 +91,7 @@ export const createScreen = async ({
   screenMeta,
 }: {
   itemMeta: Item;
-  screenMeta: Screen;
+  screenMeta: Omit<Screen, "itemId">;
 }) => {
   const itemPromise = await prisma.item.create({
     data: {

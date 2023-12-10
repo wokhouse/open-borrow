@@ -10,10 +10,8 @@ import { Item } from "@/api/runtimeSchemas";
 import Return from "./Return";
 
 const Modify = () => {
-  const contextData = useContext(ItemContext);
-
-  const data = Item.parse(contextData.item);
-  const { setItemState } = contextData;
+  const { item } = useContext(ItemContext);
+  const data = Item.parse(item);
   const { id, state } = data;
 
   return (

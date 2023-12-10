@@ -34,53 +34,56 @@ export const createItem = async (item: Item) =>
   prisma.item.create({ data: { ...item, department: "TEX" } });
 
 export const checkoutItem = async (id: Item["id"], name: string) => {
-  await prisma.itemAction.create({
-    data: {
-      action: "CHECK_OUT",
-      name: name,
-      itemId: id,
-    },
-  });
-  await prisma.item.update({
-    where: {
-      id,
-    },
-    data: {
-      state: "CHECKED_OUT",
-    },
-  });
+  await prisma.$transaction([
+    prisma.itemAction.create({
+      data: {
+        action: "CHECK_OUT",
+        name: name,
+        itemId: id,
+      },
+    }),
+    prisma.item.update({
+      where: {
+        id,
+      },
+      data: {
+        state: "CHECKED_OUT",
+      },
+    }),
+  ]);
   return;
 };
-export const returnItem = async (id: Item["id"]) => {
-  const itemPromise = prisma.item.update({
-    where: {
-      id,
-    },
-    data: {
-      state: "AVAILABLE",
-    },
-  });
-  const itemHistory = await prisma.itemAction.findFirst({
-    where: {
-      itemId: id,
-      action: "CHECK_OUT",
-    },
-    orderBy: {
-      timestamp: "asc",
-    },
-  });
-  if (!itemHistory || !("name" in itemHistory))
-    throw new Error("cannot find record of previous check-out!");
-  const actionPromise = prisma.itemAction.create({
-    data: {
-      action: "RETURN",
-      name: itemHistory.name,
-      itemId: id,
-    },
-  });
 
-  await Promise.all([itemPromise, actionPromise]);
-  return;
+export const returnItem = async (id: Item["id"]) => {
+  return prisma.$transaction(async (tx) => {
+    const item = await tx.item.update({
+      where: {
+        id,
+      },
+      include: {
+        actions: {
+          orderBy: {
+            timestamp: "asc",
+          },
+        },
+      },
+      data: {
+        state: "AVAILABLE",
+      },
+    });
+
+    if (!item.actions[0]?.name)
+      throw new Error("cannot find record of previous check-out!");
+
+    const returnAction = await tx.itemAction.create({
+      data: {
+        action: "RETURN",
+        name: item.actions[0].name,
+        itemId: item.id,
+      },
+    });
+    return returnAction;
+  });
 };
 
 export const createScreen = async ({
@@ -90,12 +93,11 @@ export const createScreen = async ({
   itemMeta: Item;
   screenMeta: Screen;
 }) => {
-  const itemPromise = prisma.item.create({
-    data: itemMeta,
+  const itemPromise = await prisma.item.create({
+    data: {
+      ...itemMeta,
+      screen: { create: screenMeta },
+    },
   });
-  const screenPromise = prisma.screen.create({
-    data: screenMeta,
-  });
-  await Promise.all([itemPromise, screenPromise]);
-  return;
+  return itemPromise;
 };

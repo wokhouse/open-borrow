@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
+import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNullableWithAggregatesFilter.schema';
 import { EnumItemStateWithAggregatesFilterObjectSchema } from './EnumItemStateWithAggregatesFilter.schema';
 import { ItemStateSchema } from '../enums/ItemState.schema';
 import { EnumDepartmentWithAggregatesFilterObjectSchema } from './EnumDepartmentWithAggregatesFilter.schema';
@@ -33,10 +33,11 @@ const Schema: z.ZodType<Prisma.ItemScalarWhereWithAggregatesInput> = z
       .optional(),
     createdAt: z
       .union([
-        z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
+        z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema),
         z.coerce.date(),
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     state: z
       .union([
         z.lazy(() => EnumItemStateWithAggregatesFilterObjectSchema),

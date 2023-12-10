@@ -1,4 +1,4 @@
-import { createScreen } from "@/api";
+import { createItem, createScreen } from "@/api";
 import { idPattern } from "@/api/validate";
 import {
   Box,
@@ -14,6 +14,10 @@ import {
   Table,
 } from "@mui/joy";
 import { Prisma, Item, Screen } from "@prisma/client";
+import {
+  ItemCreateOneSchema,
+  ScreenCreateOneSchema,
+} from "../../../prisma/generated/schemas";
 
 const Register = ({ id }: { id: string }) => {
   const data = idPattern.exec(id);
@@ -21,11 +25,21 @@ const Register = ({ id }: { id: string }) => {
     throw new Error("regex pattern failed to pull data out of ID!");
   const { groups } = data;
 
-  const newItemData = {
-    id: id,
-    state: "AVAILABLE",
-    department: groups.dept,
-  } satisfies Item;
+  const { data: newItemData } = ItemCreateOneSchema.parse({
+    data: {
+      id: id,
+      state: "AVAILABLE",
+      department: "TEX",
+      type: groups.type,
+    },
+  });
+
+  // const { data: newScreenData } = ScreenCreateOneSchema.parse({
+  //   itemId: id,
+  //   meshCount: groups.meshCount,
+  //   screenNumber: groups.screenNumber,
+  // });
+  console.log(newItemData);
 
   return (
     <Grid container direction={"column"}>
@@ -41,13 +55,7 @@ const Register = ({ id }: { id: string }) => {
       </List>
       <Button
         onClick={() => {
-          createScreen({
-            itemMeta: {
-              id: id,
-              state: "AVAILABLE",
-              department: groups.department,
-            },
-          });
+          createItem({ ...newItemData, createdAt: new Date() });
         }}
       >
         Register

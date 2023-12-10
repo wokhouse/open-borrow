@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
-import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
+import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { ItemStateSchema } from '../enums/ItemState.schema';
 import { EnumItemStateFieldUpdateOperationsInputObjectSchema } from './EnumItemStateFieldUpdateOperationsInput.schema';
 import { DepartmentSchema } from '../enums/Department.schema';
@@ -22,9 +22,10 @@ const Schema: z.ZodType<Prisma.ItemUpdateInput> = z
     createdAt: z
       .union([
         z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema),
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     state: z
       .union([
         z.lazy(() => ItemStateSchema),

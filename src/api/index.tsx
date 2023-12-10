@@ -12,6 +12,9 @@ export const getItem = async (id: string) => {
   return res;
 };
 
+export const createItem = async (item: Item) =>
+  prisma.item.create({ data: { ...item, department: "TEX" } });
+
 export const createScreen = async ({
   itemMeta,
   screenMeta,

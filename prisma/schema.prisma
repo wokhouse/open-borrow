@@ -23,18 +23,16 @@ enum ItemState {
 }
 
 enum Department {
-  // textiles
   TEX
 }
 
 enum ItemType {
-  // screen library
   SL
 }
 
 model Item {
   id         String     @id
-  createdAt  DateTime   @default(now())
+  createdAt  DateTime?  @default(now())
   state      ItemState
   department Department
   type       ItemType

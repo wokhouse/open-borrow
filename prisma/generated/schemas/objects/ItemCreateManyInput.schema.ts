@@ -8,7 +8,7 @@ import type { Prisma } from '@prisma/client';
 const Schema: z.ZodType<Prisma.ItemCreateManyInput> = z
   .object({
     id: z.string(),
-    createdAt: z.coerce.date().optional(),
+    createdAt: z.coerce.date().optional().nullable(),
     state: z.lazy(() => ItemStateSchema),
     department: z.lazy(() => DepartmentSchema),
     type: z.lazy(() => ItemTypeSchema),

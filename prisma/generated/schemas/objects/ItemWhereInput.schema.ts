@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { StringFilterObjectSchema } from './StringFilter.schema';
-import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
+import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { EnumItemStateFilterObjectSchema } from './EnumItemStateFilter.schema';
 import { ItemStateSchema } from '../enums/ItemState.schema';
 import { EnumDepartmentFilterObjectSchema } from './EnumDepartmentFilter.schema';
@@ -34,8 +34,12 @@ const Schema: z.ZodType<Prisma.ItemWhereInput> = z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     createdAt: z
-      .union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()])
-      .optional(),
+      .union([
+        z.lazy(() => DateTimeNullableFilterObjectSchema),
+        z.coerce.date(),
+      ])
+      .optional()
+      .nullable(),
     state: z
       .union([
         z.lazy(() => EnumItemStateFilterObjectSchema),

@@ -12,7 +12,6 @@ const ManualInput = ({
   const [value, setValue] = useState<string>("");
 
   const valid = idPattern.test(value);
-  console.log(idPattern.exec(value));
 
   return (
     <form
